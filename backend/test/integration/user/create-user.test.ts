@@ -62,7 +62,7 @@ describe("Teste de criacao de usuario", async () => {
     });
     try {
       const user2 = await createUserInDatabase(validUser);
-      expect.fail("O erro de criação de cpf duplo não foi lançado");
+      expect.fail("O erro de criação de email duplo não foi lançado");
     } catch (error) {
       expect(error).to.have.property("message").that.includes("Unique constraint failed on the fields: (`email`)");
     }
