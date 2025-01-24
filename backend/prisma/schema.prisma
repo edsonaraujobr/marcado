@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MASCULINO
+  FEMININO
+}
+
+enum Rating {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+model User {
+  id         String       @id @default(uuid())
+  email      String       @unique
+  name       String
+  cpf        String       @unique
+  password   String
+  birthDate  DateTime?
+  gender     Gender?
+  photo      String?
+  Scheduling Scheduling[]
+
+  @@map("users")
+}
+
+model Barber {
+  id         String       @id @default(uuid())
+  email      String       @unique
+  name       String
+  cpf        String       @unique
+  password   String
+  birthDate  DateTime?
+  gender     Gender?
+  photo      String?
+  rating     Rating?
+  Scheduling Scheduling[]
+  Haircut    Haircut[]
+
+  @@map("barbers")
+}
+
+model Haircut {
+  id         String       @id @default(uuid())
+  name       String
+  price      Decimal
+  time       Int
+  Combo      Combo[]
+  Sale       Sale[]
+  Scheduling Scheduling[]
+  barberId   String
+  barber     Barber       @relation(fields: [barberId], references: [id])
+
+  @@map("haircuts")
+}
+
+model Scheduling {
+  id   String   @id @default(uuid())
+  Date DateTime
+  time Int
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  barberId  String
+  barber    Barber  @relation(fields: [barberId], references: [id])
+  haircutId String
+  haircut   Haircut @relation(fields: [haircutId], references: [id])
+
+  @@map("schedulings")
+}
+
+model Combo {
+  id        String  @id @default(uuid())
+  name      String
+  price     Decimal
+  time      Int
+  haircutId String
+  haircut   Haircut @relation(fields: [haircutId], references: [id])
+
+  @@map("combos")
+}
+
+model Sale {
+  id        String  @id @default(uuid())
+  newPrice  Decimal
+  time      Int
+  haircutId String
+  haircut   Haircut @relation(fields: [haircutId], references: [id])
+
+  @@map("sales")
+}

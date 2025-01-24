@@ -2,8 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "npx ts-node src/server.ts",
+    "dev": "npx tsx src/server.ts",
+    "test": "NODE_ENV=test mocha --require tsx 'test/**/*.ts'",
     "biome": "npx @biomejs/biome check --write ./src"
   },
   "keywords": [],
@@ -12,12 +14,20 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/chai": "5.0.1",
+    "@types/express": "5.0.0",
+    "@types/mocha": "10.0.10",
     "@types/node": "22.10.10",
-    "ts-node": "10.9.2",
+    "axios": "1.7.9",
+    "chai": "5.1.2",
+    "mocha": "11.1.0",
+    "tsx": "^4.19.2",
     "typescript": "5.7.3"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "@prisma/client": "6.2.1",
+    "dayjs": "^1.11.13",
+    "dotenv": "16.4.7",
     "express": "4.21.2",
     "zod": "^3.24.1"
   }
