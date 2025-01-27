@@ -19,6 +19,6 @@ export const clearDB = async () => {
       prisma.scheduling.deleteMany(),
     ]);
   } catch (error) {
-    console.error("Erro ao limpar o banco de dados");
+    console.error("Erro ao limpar o banco de dados", error);
   }
 };

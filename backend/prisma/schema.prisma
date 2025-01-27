@@ -13,11 +13,17 @@ enum Gender {
 }
 
 enum Rating {
-  ONE
-  TWO
-  THREE
-  FOUR
-  FIVE
+  UM
+  DOIS
+  TRÊS
+  QUATRO
+  CINCO
+}
+
+enum HaircutType {
+  NORMAL
+  PROMOCAO
+  COMBO
 }
 
 model User {
@@ -55,47 +61,51 @@ model Haircut {
   name       String
   price      Decimal
   time       Int
-  Combo      Combo[]
-  Sale       Sale[]
+  type       HaircutType
+
+  combo      Combo?    @relation(fields: [comboId], references: [id], onDelete: Cascade)
+  comboId String?
+
+  sale   Sale? @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  saleId String?
+
+
   Scheduling Scheduling[]
   barberId   String
-  barber     Barber       @relation(fields: [barberId], references: [id])
+  barber     Barber       @relation(fields: [barberId], references: [id], onDelete: Cascade)
 
   @@map("haircuts")
 }
 
 model Scheduling {
   id   String   @id @default(uuid())
-  Date DateTime
-  time Int
+  date DateTime
 
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   barberId  String
-  barber    Barber  @relation(fields: [barberId], references: [id])
+  barber    Barber  @relation(fields: [barberId], references: [id], onDelete: Cascade)
   haircutId String
-  haircut   Haircut @relation(fields: [haircutId], references: [id])
+  haircut   Haircut @relation(fields: [haircutId], references: [id], onDelete: Cascade)
 
   @@map("schedulings")
 }
 
 model Combo {
   id        String  @id @default(uuid())
-  name      String
-  price     Decimal
-  time      Int
-  haircutId String
-  haircut   Haircut @relation(fields: [haircutId], references: [id])
+  description      String
+  haircuts Haircut[]
 
   @@map("combos")
 }
 
 model Sale {
   id        String  @id @default(uuid())
+  description String?
   newPrice  Decimal
-  time      Int
-  haircutId String
-  haircut   Haircut @relation(fields: [haircutId], references: [id])
+  isActive Boolean
+  haircuts Haircut[]
+  expiresIn DateTime?
 
   @@map("sales")
 }
