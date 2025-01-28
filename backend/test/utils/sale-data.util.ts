@@ -14,6 +14,5 @@ export const saleData = {
     time: 2,
     newPrice: 30,
     isActive: true,
-    expiresIn: "29-01-2024 12:00:00"
   },
 };

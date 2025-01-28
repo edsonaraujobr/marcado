@@ -22,7 +22,9 @@ export async function createBarberInDatabase({
   rating?: Rating;
 }) {
 
-  const formattedBirthDate = birthDate ? dayjs(birthDate, "DD-MM-YYYY").toISOString() : null;
+  const formattedBirthDate = birthDate && dayjs(birthDate, "DD-MM-YYYY HH:mm:ss").isValid()
+  ? dayjs(birthDate, "DD-MM-YYYY HH:mm:ss").toISOString()
+  : null;
 
   const barber = await prisma.barber.create({
     data: {

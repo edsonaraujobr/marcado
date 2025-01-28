@@ -12,7 +12,9 @@ export async function createSaleInDatabase({
   isActive: boolean;
   expiresIn?: string;
 }) {
-  const formattedExpiresIn = expiresIn ? dayjs(expiresIn, "DD-MM-YYYY HH:mm:ss").toISOString() : null;
+  const formattedExpiresIn = expiresIn && dayjs(expiresIn, "DD-MM-YYYY HH:mm:ss").isValid()
+  ? dayjs(expiresIn, "DD-MM-YYYY HH:mm:ss").toISOString()
+  : null;
 
   const sale = await prisma.sale.create({
     data: {
@@ -25,6 +27,7 @@ export async function createSaleInDatabase({
 
   return { 
     ...sale,
-    expiresIn: dayjs(sale.expiresIn).format("DD-MM-YYYY hh:mm:ss")
+    newPrice: Number(sale.newPrice),
+    expiresIn: expiresIn ? dayjs(sale.expiresIn).format("DD-MM-YYYY hh:mm:ss") : null,
   };
 }

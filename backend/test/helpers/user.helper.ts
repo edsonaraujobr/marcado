@@ -20,7 +20,9 @@ export async function createUserInDatabase({
   photo?: string;
 }) {
 
-  const formattedBirthDate = birthDate ? dayjs(birthDate, "DD-MM-YYYY").toISOString() : null;
+  const formattedBirthDate = birthDate && dayjs(birthDate, "DD-MM-YYYY HH:mm:ss").isValid()
+  ? dayjs(birthDate, "DD-MM-YYYY HH:mm:ss").toISOString()
+  : null;
 
   const user = await prisma.user.create({
     data: {
