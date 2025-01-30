@@ -7,7 +7,9 @@ export const userCreateValidator = z.object({
   name: z.string().optional(),
   email: z.string().email("Email inválido! Seu email precisa de um @ e um domínio"),
   cpf: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF Inválido, use o formato XXX.XXX.XXX-XX"),
-  gender: z.nativeEnum(Gender).optional(),
+  gender: z.nativeEnum(Gender, {
+    errorMap: () => ({ message: "Gênero inválido. Escolha um valor válido (MASCULINO/FEMININO)"})
+  }).optional(),
   photo: z.string().optional(),
   password: z
     .string()
