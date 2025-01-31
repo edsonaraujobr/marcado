@@ -1,6 +1,7 @@
 import { DateBirthdayFutureError } from "../errors/date-birthday-future.errors.js";
 import { InternalServerError } from "../errors/internal-server.errors.js";
 import { MaximumAgeError } from "../errors/maximum-age.errors.js";
+import { NotFoundError } from "../errors/not-found-errors.js";
 import { UserAlreadyExistsError } from "../errors/user-already-exists.errors.js";
 import * as userRepository from "../repositories/users.repositories.js";
 import { createUserType, userCreatedType } from "../types/user.types.js";
@@ -59,3 +60,14 @@ export const createUser = async ({ data } : { data: createUserType }): Promise<u
     birthDate: user.birthDate ? dayjs(user.birthDate).format("DD-MM-YYYY") : null,
   }
 };
+
+export const deleteUserByID = async ( id  : { id: string; }) => {
+  const userExists = await userRepository.findUserByID(id);
+  if(!userExists) {
+    throw new NotFoundError({
+      message: "Usuário não encontrado!",
+    })
+  }
+
+  await userRepository.deleteUserByID(id);
+}

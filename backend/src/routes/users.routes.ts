@@ -8,6 +8,6 @@ router.post("/user/create", userController.createUser);
 // router.get("/user/readByID/:id", );
 // router.post("/user/login", );
 // router.put("/user/update/:id",);
-// router.delete("/user/delete/:id", );
+router.delete("/user/delete/:id?", userController.deleteUserByID );
 
 export default router;

@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
 
   try {
     const user = await userService.createUser({data});
-    res.status(200).json(user);
+    res.status(201).json(user);
   } catch (error) {
     if (error instanceof CustomError) {
       return res.status(error.code).json(error.toJSON());
@@ -54,3 +54,24 @@ export const createUser = async (req, res) => {
     res.status(500).json({ message: "Erro interno ao criar usuário" });
   }
 };
+
+export const deleteUserByID = async (req, res) => {
+  const { id } = req.params;
+
+  if(!id) {
+    return res.status(400).json(
+      new BadInputError({
+        message: "É necessário passar um ID para remover o usuário!",
+      })
+    );
+  }
+  try {
+    await userService.deleteUserByID(id);
+    res.status(200).json({message: "Estudante excluido com sucesso!"})
+  } catch (error) {
+    if (error instanceof CustomError) {
+      return res.status(error.code).json(error.toJSON());
+    }
+    res.status(500).json({ message: "Erro interno ao criar usuário" });
+  }
+}

@@ -59,12 +59,12 @@ describe("Teste de criacao de usuario", async () => {
   });
 
   it("Deve retornar erro ao criar dois usuarios com mesmo cpf no banco de dados", async () => {
-    const user = await createUserInDatabase({
+    await createUserInDatabase({
       ...validUser,
       email: "teste@gmail.com"
     });
     try {
-      const user2 = await createUserInDatabase(validUser);
+      await createUserInDatabase(validUser);
       expect.fail("O erro de criação de cpf duplo não foi lançado");
     } catch (error) {
       expect(error).to.have.property("message").that.includes("Unique constraint failed on the fields: (`cpf`)");
@@ -72,12 +72,12 @@ describe("Teste de criacao de usuario", async () => {
   });
 
   it("Deve retornar erro ao criar dois usuarios com mesmo email no banco de dados", async () => {
-    const user = await createUserInDatabase({
+    await createUserInDatabase({
       ...validUser,
       cpf: "1010101010"
     });
     try {
-      const user2 = await createUserInDatabase(validUser);
+      await createUserInDatabase(validUser);
       expect.fail("O erro de criação de email duplo não foi lançado");
     } catch (error) {
       expect(error).to.have.property("message").that.includes("Unique constraint failed on the fields: (`email`)");
@@ -87,7 +87,7 @@ describe("Teste de criacao de usuario", async () => {
   it("Deve criar um usuario com sucesso atraves da API", async () => {
     const response = await axios.post("http://localhost:3030/user/create", validUser)
 
-    expect(response.status).to.equal(200);
+    expect(response.status).to.equal(201);
     const user = response.data;
 
     expect(user).to.have.property("id");
@@ -101,7 +101,7 @@ describe("Teste de criacao de usuario", async () => {
   it("Deve criar um usuario sem os campos opcionais atraves da API", async () => {
     const response = await axios.post("http://localhost:3030/user/create", userWithoutOptionalFields )
 
-    expect(response.status).to.equal(200);
+    expect(response.status).to.equal(201);
     const user = response.data;
 
     expect(user).to.have.property("id");
